@@ -1,4 +1,5 @@
-const { prisma } = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 let userDao = {
     registerUser: registerUser,
@@ -7,10 +8,14 @@ let userDao = {
 
 async function registerUser(body){
     try{
-        const user = await prisma.job.create({
-            name: body.name,
-            email:body.email,
-            password: body.password
+        const user = await prisma.user.create({
+            data: body
+            
+            /*{
+                name: body.name,
+                email: body.email,
+                password: body.password,
+            }*/
         });
         console.log(user);
         return user;

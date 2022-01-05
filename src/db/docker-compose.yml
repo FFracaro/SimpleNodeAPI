@@ -7,7 +7,7 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: myrootsql
-      MYSQL_DATABASE: simple_api
+      MYSQL_DATABASE: testapi
     networks:
       cursoNode:
         ipv4_address: 10.7.0.3
