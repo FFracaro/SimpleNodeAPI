@@ -1,23 +1,25 @@
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const bcrypt = require('bcryptjs');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 let userDao = {
     registerUser: registerUser,
     findUserByEmail: findUserByEmail
 }
 
+prisma.$use(async (params, next) => {
+    if(params.action == 'create'){
+        const hash = await bcrypt.hash(params.args.data.password, 10);
+        params.args.data.password = hash;
+    }
+    return await next (params);
+})
+
 async function registerUser(body){
     try{
         const user = await prisma.user.create({
             data: body
-            
-            /*{
-                name: body.name,
-                email: body.email,
-                password: body.password,
-            }*/
         });
-        console.log(user);
         return user;
     }catch(err){
         return err;
@@ -25,9 +27,16 @@ async function registerUser(body){
 }
 
 async function findUserByEmail(email){
-    /*
-    const user = await User.findOne( { email } );
-    return user ? true : false;    */
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email,
+            },
+        })
+        return user;
+    } catch (error) {
+        return err;
+    }
 }
 
 module.exports = userDao;

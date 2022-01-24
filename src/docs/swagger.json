@@ -1,0 +1,130 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Simple API",
+        "description": "Register a new user",
+        "termsOfService": "aa",
+        "contact": {
+            "email": "frafracaro@aaa.com"
+        },
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/",
+            "description": "Test API"
+        },
+        {
+            "url": "http://localhost:3000/aaa",
+            "description": "Prod API"
+        }
+    ],
+    "paths": {
+        "/user/register": {
+            "post": {
+                "summary": "User registration",
+                "description": "Route to register a new user.",
+                "tags": ["User"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "Register user": {
+                                    "value": {
+                                        "name": "Aaaaa aaaa",
+                                        "email": "alskd123.asdada@ghol.com",
+                                        "password": "Ajkfdjf59256%$#@@!52ASADDAD"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/UserEmailAlreadyRegistered"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/UserCannotBeRegistered"
+                                        }   
+                                    ]
+                                },
+                                "examples": {
+                                    "Email already registered": {
+                                        "value": {
+                                            "error": "Email already registered."
+                                        }
+                                    },
+                                    "Cannot register user": {
+                                        "value": {
+                                            "error": "Registration proccess failed."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref":"#/components/schemas/User"                                        
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            }                             
+                        }        
+                    }
+                }
+            },
+            "UserEmailAlreadyRegistered": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserCannotBeRegistered": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

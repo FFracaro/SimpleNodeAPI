@@ -6,21 +6,20 @@ const userController = {
 }
 
 async function createUser(req, res){
-    /*if((await userDao.findUserByEmail(req.body.email))){
+    if((await userDao.findUserByEmail(req.body.email))){
         return res.status(400).send( { error: 'Email already registered.' } );
-    }*/
-    //console.log(req.body);
+    }
 
     userDao.registerUser(req.body).then(user => {
+        user.password = undefined;
         return res.send( { user } );
     }).catch(err => {
-        return res.status(400).send( { error: 'Registration proccess failed' } );
+        return res.status(400).send( { error: 'Registration proccess failed.' } );
     });
 }
 
 async function findOneUserByEmail(req, res){
-    const user = await userDao.findUserByEmail(req.body.email);
-    return user ? { user } : res.status(400).send( { error: 'User not found.' } );
+    return await userDao.findUserByEmail(req.body.email);
 }
 
 module.exports = userController;

@@ -1,2 +1,2 @@
 # SimpleNodeAPI
-Node API witrh express and MongoDB
+A simple API made with node, express, jwt, prisma and mysql.
